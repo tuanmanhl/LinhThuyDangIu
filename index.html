@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chúc Mừng Khai Trương</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe6f0, #ffffff);
+      font-family: 'Quicksand', sans-serif;
+      overflow-x: hidden;
+    }
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://i.imgur.com/Qx8mL6f.gif') center/cover no-repeat;
+      z-index: -2;
+      opacity: 0.2;
+    }
+    .overlay {
+      padding: 60px 20px;
+      text-align: center;
+      transition: opacity 0.8s ease;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4em;
+      color: #d6336c;
+      margin-bottom: 0.2em;
+    }
+    .typing-text {
+      font-size: 1.5em;
+      color: #444;
+      max-width: 700px;
+      margin: 0 auto 20px;
+      line-height: 1.8em;
+      white-space: pre-line;
+      border-right: 2px solid rgba(0,0,0,0.75);
+      overflow: hidden;
+      min-height: 120px;
+    }
+    .shop-image {
+      max-width: 400px;
+      border-radius: 20px;
+      margin: 30px auto;
+      display: block;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .signature {
+      margin-top: 2em;
+      font-size: 1.3em;
+      font-style: italic;
+      color: #a52a2a;
+    }
+    footer {
+      margin-top: 50px;
+      color: #555;
+      font-size: 1em;
+      line-height: 1.6em;
+      animation: pulse 3s infinite;
+    }
+    .hidden {
+      display: none;
+    }
+    .next-btn {
+      margin-top: 30px;
+      padding: 10px 25px;
+      font-size: 1em;
+      background-color: #d6336c;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .next-btn:hover {
+      background-color: #b12a58;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="background"></div>
+
+<audio autoplay loop>
+  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
+</audio>
+
+<!-- Slide 1 -->
+<div class="overlay" id="slide1">
+  <h1>Chúc Mừng Khai Trương</h1>
+  <div id="typing1" class="typing-text"></div>
+  <div class="signature">— From Tuấn Anh 🧡</div>
+  <footer>
+    🧨 Tưng bừng khai trương – Rộn ràng tài lộc! 💰<br>
+    ✨ Vàng vào như suối – Lộc đến như mưa!<br>
+    💖 Kính chúc chị Linh Thùy & gia đình khai trương đại cát đại lợi!<br>
+  </footer>
+  <button class="next-btn" onclick="showNext()">Tiếp theo ➜</button>
+</div>
+
+<!-- Slide 2 -->
+<div class="overlay hidden" id="slide2">
+  <h1>Một Khởi Đầu Mới</h1>
+  <div id="typing2" class="typing-text"></div>
+  <div class="signature">— Thành công rực rỡ 💼✨</div>
+  <footer>
+    💎 Vững vàng như vàng – Sáng giá như kim cương 💎<br>
+    🔔 Mỗi ngày bán hàng là một ngày vui!<br>
+    ❤️ Gửi lời chúc chân thành: Buôn may bán đắt – Lộc phát quanh năm!<br>
+    <small style="color:#999">— From Tuấn Anh • Chúc trăm năm thịnh vượng!</small>
+  </footer>
+</div>
+
+<script>
+  const message1 = `🌸 Gửi đến Chị Linh Thùy và gia đình,
+
+Chúc mừng khai trương hồng phát!
+
+💫 Phát tài – Phát lộc
+💫 Buôn may – Bán đắt
+💫 Khách hàng nườm nượp như hoa nở đầu xuân 💖`;
+
+  const message2 = `
+🌟 Chúc tiệm làm ăn phát đạt, uy tín vang xa,
+vàng bạc vào ra như nước, khách đến đông như hội!
+
+🧧 Mỗi đồng lợi nhuận là niềm vui, 
+mỗi nụ cười khách hàng là thành công quý giá nhất.
+
+💖 Vạn sự như ý – Tỉ sự như mơ – Triệu triệu bất ngờ 8386!`;
+
+  let i = 0, j = 0;
+  function typeWriter1() {
+    if (i < message1.length) {
+      document.getElementById('typing1').innerHTML += message1.charAt(i);
+      i++;
+      setTimeout(typeWriter1, 35);
+    }
+  }
+
+  function typeWriter2() {
+    if (j < message2.length) {
+      document.getElementById('typing2').innerHTML += message2.charAt(j);
+      j++;
+      setTimeout(typeWriter2, 35);
+    }
+  }
+
+  function showNext() {
+    document.getElementById('slide1').classList.add('hidden');
+    document.getElementById('slide2').classList.remove('hidden');
+    typeWriter2();
+  }
+
+  typeWriter1();
+</script>
+
+</body>
+</html>
