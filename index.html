@@ -5,6 +5,14 @@
   <title>Chúc Mừng Khai Trương</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
   <style>
+    #fireworksCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
     body {
       margin: 0;
       padding: 0;
@@ -12,6 +20,7 @@
       font-family: 'Quicksand', sans-serif;
       overflow-x: hidden;
     }
+
     .background {
       position: fixed;
       top: 0;
@@ -22,17 +31,20 @@
       z-index: -2;
       opacity: 0.2;
     }
+
     .overlay {
       padding: 60px 20px;
       text-align: center;
       transition: opacity 0.8s ease;
     }
+
     h1 {
       font-family: 'Great Vibes', cursive;
       font-size: 4em;
       color: #d6336c;
       margin-bottom: 0.2em;
     }
+
     .typing-text {
       font-size: 1.5em;
       color: #444;
@@ -44,19 +56,14 @@
       overflow: hidden;
       min-height: 120px;
     }
-    .shop-image {
-      max-width: 400px;
-      border-radius: 20px;
-      margin: 30px auto;
-      display: block;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-    }
+
     .signature {
       margin-top: 2em;
       font-size: 1.3em;
       font-style: italic;
       color: #a52a2a;
     }
+
     footer {
       margin-top: 50px;
       color: #555;
@@ -64,9 +71,11 @@
       line-height: 1.6em;
       animation: pulse 3s infinite;
     }
+
     .hidden {
       display: none;
     }
+
     .next-btn {
       margin-top: 30px;
       padding: 10px 25px;
@@ -78,9 +87,11 @@
       cursor: pointer;
       transition: background-color 0.3s;
     }
+
     .next-btn:hover {
       background-color: #b12a58;
     }
+
     @keyframes pulse {
       0%, 100% { opacity: 1; }
       50% { opacity: 0.6; }
@@ -90,6 +101,7 @@
 <body>
 
 <div class="background"></div>
+<canvas id="fireworksCanvas"></canvas>
 
 <audio autoplay loop>
   <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
@@ -103,7 +115,7 @@
   <footer>
     🧨 Tưng bừng khai trương – Rộn ràng tài lộc! 💰<br>
     ✨ Vàng vào như suối – Lộc đến như mưa!<br>
-    💖 Kính chúc chị Linh Thùy & gia đình khai trương đại cát đại lợi!<br>
+    💖 Khai trương đại cát đại lợi!<br>
   </footer>
   <button class="next-btn" onclick="showNext()">Tiếp theo ➜</button>
 </div>
@@ -114,10 +126,9 @@
   <div id="typing2" class="typing-text"></div>
   <div class="signature">— Thành công rực rỡ 💼✨</div>
   <footer>
-    💎 Vững vàng như vàng – Sáng giá như kim cương 💎<br>
     🔔 Mỗi ngày bán hàng là một ngày vui!<br>
-    ❤️ Gửi lời chúc chân thành: Buôn may bán đắt – Lộc phát quanh năm!<br>
-    <small style="color:#999">— From Tuấn Anh • Chúc trăm năm thịnh vượng!</small>
+    ❤️ Buôn may bán đắt – Lộc phát quanh năm!<br>
+    <small style="color:#999">— From Tuấn Anh —</small>
   </footer>
 </div>
 
@@ -163,6 +174,98 @@ mỗi nụ cười khách hàng là thành công quý giá nhất.
   }
 
   typeWriter1();
+</script>
+
+<!-- 🔥 Pháo hoa -->
+<script>
+  const canvas = document.getElementById('fireworksCanvas');
+  const ctx = canvas.getContext('2d');
+  let fireworks = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Firework {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height;
+      this.targetY = Math.random() * canvas.height / 2;
+      this.particles = [];
+      this.exploded = false;
+      this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+    }
+    update() {
+      if (!this.exploded) {
+        this.y -= 5;
+        if (this.y <= this.targetY) {
+          this.exploded = true;
+          for (let i = 0; i < 50; i++) {
+            this.particles.push(new Particle(this.x, this.y, this.color));
+          }
+        }
+      } else {
+        this.particles.forEach(p => p.update());
+      }
+    }
+    draw() {
+      if (!this.exploded) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      } else {
+        this.particles.forEach(p => p.draw());
+      }
+    }
+  }
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.velX = (Math.random() - 0.5) * 5;
+      this.velY = (Math.random() - 0.5) * 5;
+      this.alpha = 1;
+      this.color = color;
+    }
+    update() {
+      this.x += this.velX;
+      this.y += this.velY;
+      this.alpha -= 0.02;
+    }
+    draw() {
+      ctx.globalAlpha = this.alpha;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // ❌ Không tô đen nữa
+
+    if (Math.random() < 0.05) {
+      fireworks.push(new Firework());
+    }
+
+    fireworks.forEach((fw, i) => {
+      fw.update();
+      fw.draw();
+      if (fw.exploded && fw.particles.every(p => p.alpha <= 0)) {
+        fireworks.splice(i, 1);
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
 </script>
 
 </body>
