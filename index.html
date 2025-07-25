@@ -5,20 +5,22 @@
   <title>Chúc Mừng Khai Trương</title>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: 'Quicksand', sans-serif;
+      background: linear-gradient(135deg, #ffe6f0, #ffffff);
+    }
+
     #fireworksCanvas {
       position: fixed;
       top: 0;
       left: 0;
       pointer-events: none;
-      z-index: -1;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ffe6f0, #ffffff);
-      font-family: 'Quicksand', sans-serif;
-      overflow-x: hidden;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
     }
 
     .background {
@@ -28,48 +30,51 @@
       width: 100vw;
       height: 100vh;
       background: url('https://i.imgur.com/Qx8mL6f.gif') center/cover no-repeat;
-      z-index: -2;
-      opacity: 0.2;
+      z-index: 0;
+      opacity: 0.15;
     }
 
     .overlay {
-      padding: 60px 20px;
+      position: relative;
+      z-index: 2;
       text-align: center;
-      transition: opacity 0.8s ease;
+      padding: 80px 20px;
     }
 
     h1 {
       font-family: 'Great Vibes', cursive;
       font-size: 4em;
       color: #d6336c;
-      margin-bottom: 0.2em;
     }
 
     .typing-text {
-      font-size: 1.5em;
-      color: #444;
+      font-size: 1.4em;
+      color: #333;
       max-width: 700px;
-      margin: 0 auto 20px;
-      line-height: 1.8em;
+      margin: 20px auto;
       white-space: pre-line;
-      border-right: 2px solid rgba(0,0,0,0.75);
+      border-right: 2px solid rgba(0,0,0,0.5);
       overflow: hidden;
-      min-height: 120px;
+      min-height: 140px;
     }
 
     .signature {
-      margin-top: 2em;
-      font-size: 1.3em;
-      font-style: italic;
+      font-size: 1.2em;
+      margin-top: 30px;
       color: #a52a2a;
+      font-style: italic;
     }
 
     footer {
-      margin-top: 50px;
-      color: #555;
+      margin-top: 40px;
+      color: #666;
       font-size: 1em;
-      line-height: 1.6em;
       animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
     }
 
     .hidden {
@@ -78,23 +83,18 @@
 
     .next-btn {
       margin-top: 30px;
-      padding: 10px 25px;
+      padding: 12px 30px;
       font-size: 1em;
       background-color: #d6336c;
       color: white;
       border: none;
-      border-radius: 25px;
+      border-radius: 30px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: background-color 0.3s ease;
     }
 
     .next-btn:hover {
       background-color: #b12a58;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.6; }
     }
   </style>
 </head>
@@ -102,10 +102,6 @@
 
 <div class="background"></div>
 <canvas id="fireworksCanvas"></canvas>
-
-<audio autoplay loop>
-  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
-</audio>
 
 <!-- Slide 1 -->
 <div class="overlay" id="slide1">
@@ -132,6 +128,7 @@
   </footer>
 </div>
 
+<!-- 🔤 Hiệu ứng gõ chữ -->
 <script>
   const message1 = `🌸 Gửi đến Chị Linh Thùy và gia đình,
 
@@ -176,7 +173,7 @@ mỗi nụ cười khách hàng là thành công quý giá nhất.
   typeWriter1();
 </script>
 
-<!-- 🔥 Pháo hoa -->
+<!-- 🔥 Pháo hoa tự động -->
 <script>
   const canvas = document.getElementById('fireworksCanvas');
   const ctx = canvas.getContext('2d');
@@ -198,6 +195,7 @@ mỗi nụ cười khách hàng là thành công quý giá nhất.
       this.exploded = false;
       this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
     }
+
     update() {
       if (!this.exploded) {
         this.y -= 5;
@@ -211,6 +209,7 @@ mỗi nụ cười khách hàng là thành công quý giá nhất.
         this.particles.forEach(p => p.update());
       }
     }
+
     draw() {
       if (!this.exploded) {
         ctx.beginPath();
@@ -232,11 +231,13 @@ mỗi nụ cười khách hàng là thành công quý giá nhất.
       this.alpha = 1;
       this.color = color;
     }
+
     update() {
       this.x += this.velX;
       this.y += this.velY;
       this.alpha -= 0.02;
     }
+
     draw() {
       ctx.globalAlpha = this.alpha;
       ctx.beginPath();
@@ -248,8 +249,7 @@ mỗi nụ cười khách hàng là thành công quý giá nhất.
   }
 
   function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height); // ❌ Không tô đen nữa
-
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (Math.random() < 0.05) {
       fireworks.push(new Firework());
     }
