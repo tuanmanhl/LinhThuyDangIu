@@ -1,82 +1,272 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <title>Chúc Mừng Khai Trương</title>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #fddde6, #fad0c4);
-      text-align: center;
-      color: #333;
-      overflow: hidden;
-    }
-    h1 {
-      font-size: 3em;
-      color: #e91e63;
-      margin-top: 2em;
-    }
-    .message {
-      margin-top: 1em;
-      font-size: 1.2em;
-    }
-    .btn {
-      background: #e91e63;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      margin-top: 2em;
-    }
-    canvas {
+    #fireworksCanvas {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100%;
-      height: 100%;
       pointer-events: none;
-      z-index: 999;
+      z-index: -1;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffe6f0, #ffffff);
+      font-family: 'Quicksand', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: url('https://i.imgur.com/Qx8mL6f.gif') center/cover no-repeat;
+      z-index: -2;
+      opacity: 0.2;
+    }
+
+    .overlay {
+      padding: 60px 20px;
+      text-align: center;
+      transition: opacity 0.8s ease;
+    }
+
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4em;
+      color: #d6336c;
+      margin-bottom: 0.2em;
+    }
+
+    .typing-text {
+      font-size: 1.5em;
+      color: #444;
+      max-width: 700px;
+      margin: 0 auto 20px;
+      line-height: 1.8em;
+      white-space: pre-line;
+      border-right: 2px solid rgba(0,0,0,0.75);
+      overflow: hidden;
+      min-height: 120px;
+    }
+
+    .signature {
+      margin-top: 2em;
+      font-size: 1.3em;
+      font-style: italic;
+      color: #a52a2a;
+    }
+
+    footer {
+      margin-top: 50px;
+      color: #555;
+      font-size: 1em;
+      line-height: 1.6em;
+      animation: pulse 3s infinite;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .next-btn {
+      margin-top: 30px;
+      padding: 10px 25px;
+      font-size: 1em;
+      background-color: #d6336c;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .next-btn:hover {
+      background-color: #b12a58;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
     }
   </style>
 </head>
 <body>
 
+<div class="background"></div>
+<canvas id="fireworksCanvas"></canvas>
+
+<audio autoplay loop>
+  <source src="https://www.fesliyanstudios.com/play-mp3/387" type="audio/mpeg">
+</audio>
+
+<!-- Slide 1 -->
+<div class="overlay" id="slide1">
   <h1>Chúc Mừng Khai Trương</h1>
-  <p class="message">🎉 Gửi đến chị Linh Thùy và gia đình lời chúc khai trương hồng phát!<br>
-    💰 Phát tài phát lộc – Buôn may bán đắt!<br>
-    🧧 Khách hàng nườm nượp như hoa nở đầu xuân 🌸<br>
-    — From Tuấn Anh 🧡
-  </p>
+  <div id="typing1" class="typing-text"></div>
+  <div class="signature">— From Tuấn Anh 🧡</div>
+  <footer>
+    🧨 Tưng bừng khai trương – Rộn ràng tài lộc! 💰<br>
+    ✨ Vàng vào như suối – Lộc đến như mưa!<br>
+    💖 Khai trương đại cát đại lợi!<br>
+  </footer>
+  <button class="next-btn" onclick="showNext()">Tiếp theo ➜</button>
+</div>
 
-  <button class="btn" onclick="launchFireworks()">Bắn Pháo Hoa 🎆</button>
+<!-- Slide 2 -->
+<div class="overlay hidden" id="slide2">
+  <h1>Một Khởi Đầu Mới</h1>
+  <div id="typing2" class="typing-text"></div>
+  <div class="signature">— Thành công rực rỡ 💼✨</div>
+  <footer>
+    🔔 Mỗi ngày bán hàng là một ngày vui!<br>
+    ❤️ Buôn may bán đắt – Lộc phát quanh năm!<br>
+    <small style="color:#999">— From Tuấn Anh —</small>
+  </footer>
+</div>
 
-  <canvas id="fireworks"></canvas>
+<script>
+  const message1 = `🌸 Gửi đến Chị Linh Thùy và gia đình,
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script>
-    function launchFireworks() {
-      const duration = 3 * 1000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+Chúc mừng khai trương hồng phát!
 
-      const interval = setInterval(function() {
-        const timeLeft = animationEnd - Date.now();
+💫 Phát tài – Phát lộc
+💫 Buôn may – Bán đắt
+💫 Khách hàng nườm nượp như hoa nở đầu xuân 💖`;
 
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
+  const message2 = `
+🌟 Chúc tiệm làm ăn phát đạt, uy tín vang xa,
+vàng bạc vào ra như nước, khách đến đông như hội!
 
-        const particleCount = 50 * (timeLeft / duration);
-        confetti(Object.assign({}, defaults, {
-          particleCount,
-          origin: { x: Math.random(), y: Math.random() - 0.2 }
-        }));
-      }, 250);
+🧧 Mỗi đồng lợi nhuận là niềm vui, 
+mỗi nụ cười khách hàng là thành công quý giá nhất.
+
+💖 Vạn sự như ý – Tỉ sự như mơ – Triệu triệu bất ngờ 8386!`;
+
+  let i = 0, j = 0;
+  function typeWriter1() {
+    if (i < message1.length) {
+      document.getElementById('typing1').innerHTML += message1.charAt(i);
+      i++;
+      setTimeout(typeWriter1, 35);
     }
-  </script>
+  }
+
+  function typeWriter2() {
+    if (j < message2.length) {
+      document.getElementById('typing2').innerHTML += message2.charAt(j);
+      j++;
+      setTimeout(typeWriter2, 35);
+    }
+  }
+
+  function showNext() {
+    document.getElementById('slide1').classList.add('hidden');
+    document.getElementById('slide2').classList.remove('hidden');
+    typeWriter2();
+  }
+
+  typeWriter1();
+</script>
+
+<!-- 🔥 Pháo hoa -->
+<script>
+  const canvas = document.getElementById('fireworksCanvas');
+  const ctx = canvas.getContext('2d');
+  let fireworks = [];
+
+  function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  class Firework {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = canvas.height;
+      this.targetY = Math.random() * canvas.height / 2;
+      this.particles = [];
+      this.exploded = false;
+      this.color = `hsl(${Math.random() * 360}, 100%, 60%)`;
+    }
+    update() {
+      if (!this.exploded) {
+        this.y -= 5;
+        if (this.y <= this.targetY) {
+          this.exploded = true;
+          for (let i = 0; i < 50; i++) {
+            this.particles.push(new Particle(this.x, this.y, this.color));
+          }
+        }
+      } else {
+        this.particles.forEach(p => p.update());
+      }
+    }
+    draw() {
+      if (!this.exploded) {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      } else {
+        this.particles.forEach(p => p.draw());
+      }
+    }
+  }
+
+  class Particle {
+    constructor(x, y, color) {
+      this.x = x;
+      this.y = y;
+      this.velX = (Math.random() - 0.5) * 5;
+      this.velY = (Math.random() - 0.5) * 5;
+      this.alpha = 1;
+      this.color = color;
+    }
+    update() {
+      this.x += this.velX;
+      this.y += this.velY;
+      this.alpha -= 0.02;
+    }
+    draw() {
+      ctx.globalAlpha = this.alpha;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // ❌ Không tô đen nữa
+
+    if (Math.random() < 0.05) {
+      fireworks.push(new Firework());
+    }
+
+    fireworks.forEach((fw, i) => {
+      fw.update();
+      fw.draw();
+      if (fw.exploded && fw.particles.every(p => p.alpha <= 0)) {
+        fireworks.splice(i, 1);
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+
+  animate();
+</script>
+
 </body>
 </html>
